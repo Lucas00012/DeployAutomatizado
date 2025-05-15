@@ -13,8 +13,9 @@ jobs:
 
     - name: Login no Railway
       run: npm install -g @railway/cli
-    - run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
 
     - name: Deploy para Railway com Docker Compose
       working-directory: backend
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: railway up --service "backend"
