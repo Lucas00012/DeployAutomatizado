@@ -24,6 +24,9 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Deploy to Netlify
         run: |
           netlify deploy --dir=frontend/dist \
