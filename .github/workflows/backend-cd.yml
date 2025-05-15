@@ -20,8 +20,14 @@ jobs:
         RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: railway link --project 98383233-cba5-4d58-a819-f2cead584136
 
-    - name: Deploy para Railway com Docker Compose
+    - name: Deploy API para Railway com Docker Compose
       working-directory: backend
       env:
         RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway up
+      run: railway up --service deployteste.api
+    
+    - name: Deploy DB para Railway com Docker Compose
+      working-directory: backend
+      env:
+        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      run: railway up --service deployteste.database
