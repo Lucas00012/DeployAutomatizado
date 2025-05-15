@@ -28,3 +28,6 @@ Thumbs.db
 
 /.vs
 obj/
+
+# Local Netlify folder
+.netlify
