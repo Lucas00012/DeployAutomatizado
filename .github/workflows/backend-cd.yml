@@ -17,7 +17,7 @@ jobs:
     - name: Linkar com projeto Railway (caso necessário)
       working-directory: backend
       env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: railway link --project 98383233-cba5-4d58-a819-f2cead584136
 
     - name: Deploy para Railway com Docker Compose
