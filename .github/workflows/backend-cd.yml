@@ -1,0 +1,20 @@
+name: Backend - CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Login no Railway
+      run: npm install -g railway
+    - run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
+
+    - name: Deploy para Railway com Docker Compose
+      working-directory: backend
+      run: railway up --service "backend"
