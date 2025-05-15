@@ -23,5 +23,5 @@ jobs:
     - name: Deploy para Railway com Docker Compose
       working-directory: backend
       env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
       run: railway up
