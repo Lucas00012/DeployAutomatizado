@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Login no Railway
-      run: npm install -g railway
+      run: npm install -g @railway/cli
     - run: railway login --token ${{ secrets.RAILWAY_TOKEN }}
 
     - name: Deploy para Railway com Docker Compose
