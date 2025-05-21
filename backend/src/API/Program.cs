@@ -34,6 +34,10 @@ var app = builder.Build();
 
 app.UseCors("CorsPolicy");
 
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseExceptionHandler(errorApp =>
 {
     errorApp.Run(async context =>
@@ -58,12 +62,6 @@ app.UseExceptionHandler(errorApp =>
         });
     });
 });
-
-app.UseDeveloperExceptionPage();
-
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
