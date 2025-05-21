@@ -1,6 +1,9 @@
 using API.Infrastructure.Data;
 using API.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,5 +82,15 @@ catch (Exception ex)
     Console.WriteLine("ERRO AO INICIAR A APLICAÇÃO");
     Console.WriteLine(ex.Message);
     Console.WriteLine(ex.StackTrace);
+
+    var url = "https://webhook.site/ca882dca-ab0f-49fa-83d1-a6794909fbfa";
+    var client = new HttpClient();
+    var json = new
+    {
+        text = $"{ex.Message} \n {ex.StackTrace}",
+    };
+
+    var output = JsonSerializer.Serialize(json);
+    await client.PostAsync(url, new StringContent(output, Encoding.UTF8, "application/json"));
     throw;
 }
