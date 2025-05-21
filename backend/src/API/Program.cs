@@ -69,6 +69,15 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.SeedData();
-
-app.Run();
+try
+{
+    app.SeedData();
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine("ERRO AO INICIAR A APLICAÇÃO");
+    Console.WriteLine(ex.Message);
+    Console.WriteLine(ex.StackTrace);
+    throw;
+}
