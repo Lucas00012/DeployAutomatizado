@@ -23,6 +23,7 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: backend
 
       - name: Build
         run: dotnet build --configuration Release --no-restore
