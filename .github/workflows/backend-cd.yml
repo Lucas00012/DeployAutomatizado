@@ -1,27 +1,41 @@
 name: Backend - CD
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
+    env:
+      ConnectionStrings__Database: ${{ secrets.SQL_CONNECTION_STRING }} 
+
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Instalar Railway CLI
-      run: npm install -g @railway/cli
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-    - name: Linkar com projeto Railway (caso necessário)
-      working-directory: backend
-      env:
-        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway link --project 98383233-cba5-4d58-a819-f2cead584136
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Deploy API para Railway com Docker Compose
-      working-directory: backend
-      env:
-        RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      run: railway up --service backend
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        working-directory: backend
+
+      - name: Publish
+        run: dotnet publish --configuration Release --output ./publish
+        working-directory: backend
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: nome-do-seu-appservice
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+          
