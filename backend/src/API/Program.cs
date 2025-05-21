@@ -34,6 +34,31 @@ var app = builder.Build();
 
 app.UseCors("CorsPolicy");
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+
+        var errorFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        var exception = errorFeature?.Error;
+
+        if (exception != null)
+        {
+            // Log simples no console (Azure captura isso)
+            Console.WriteLine("Exceção capturada:");
+            Console.WriteLine(exception.Message);
+            Console.WriteLine(exception.StackTrace);
+        }
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            error = "Erro interno no servidor. Consulte os logs."
+        });
+    });
+});
+
 app.UseDeveloperExceptionPage();
 
 // Configure the HTTP request pipeline.
