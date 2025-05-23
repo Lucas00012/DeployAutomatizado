@@ -2,7 +2,9 @@ name: Backend - CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
@@ -16,10 +18,17 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x' # Altere conforme necessário
+          dotnet-version: '8.0.x'
 
       - name: Restore dependencies
         run: dotnet restore ./backend/Backend.sln
 
-      - name: Build
-        run: dotnet build ./backend/Backend.sln --configuration Release --no-restore
+      - name: Publish
+        run: dotnet publish --configuration Release --output ./publish
+        working-directory: backend
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-publish-${{ github.ref_name }}
+          path: backend/publish
