@@ -22,6 +22,8 @@ jobs:
         with:
           name: backend-publish-${{ github.ref_name }}
           path: ./publish
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
