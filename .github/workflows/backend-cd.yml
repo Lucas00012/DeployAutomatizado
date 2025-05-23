@@ -4,11 +4,17 @@ on:
   # push:
   #   branches:
   #     - master
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Backend - CI"]
+    types:
+      - completed
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment:
+      name: cd-approval  # Requer aprovação manual
 
     steps:
       - name: Download artifact
