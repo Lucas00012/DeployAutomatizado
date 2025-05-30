@@ -1,9 +1,6 @@
 name: Backend - CD
 
 on:
-  # push:
-  #   branches:
-  #     - master
   workflow_run:
     workflows: ["Backend - CI"]
     types:
@@ -14,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment:
-      name: cd-approval  # Requer aprovação manual
+      name: cd-approval
 
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: backend-publish-${{ github.ref_name }}
+          name: backend-publish
           path: ./publish
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
