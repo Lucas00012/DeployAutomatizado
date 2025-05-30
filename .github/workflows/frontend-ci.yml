@@ -42,5 +42,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: frontend-publish-${{ github.ref_name }}
+        name: frontend-publish
         path: frontend/dist/browser
